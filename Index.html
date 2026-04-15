@@ -11,96 +11,219 @@
     --bg-tertiary: #faf9f5;
     --text-primary: #1a1a1a;
     --text-secondary: #6b6b6b;
-    --border: rgba(0,0,0,0.12);
-    --border-strong: rgba(0,0,0,0.2);
-    --accent: #2563eb;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.15);
+    --accent: #6366f1;
+    --accent-light: rgba(99,102,241,0.1);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg-primary: #1f1f1f;
-      --bg-secondary: #2a2a2a;
-      --bg-tertiary: #181818;
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #242424;
+      --bg-tertiary: #111111;
       --text-primary: #f0f0f0;
       --text-secondary: #a0a0a0;
-      --border: rgba(255,255,255,0.12);
-      --border-strong: rgba(255,255,255,0.2);
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.15);
+      --accent: #818cf8;
+      --accent-light: rgba(129,140,248,0.12);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
     }
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     background: var(--bg-tertiary);
     color: var(--text-primary);
     margin: 0;
-    padding: 24px 16px;
+    padding: 32px 16px;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
   .container { max-width: 720px; margin: 0 auto; }
-  h1 { font-size: 22px; font-weight: 500; margin: 0 0 24px; }
+  h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: -0.3px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+  }
   input[type="number"] {
     width: 100%;
-    height: 36px;
-    padding: 0 10px;
-    border: 0.5px solid var(--border);
-    border-radius: 8px;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
     background: var(--bg-primary);
     color: var(--text-primary);
     font-size: 14px;
     font-family: inherit;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
   }
-  input[type="number"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
+  input[type="number"]:hover { border-color: var(--border-strong); }
+  input[type="number"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
   input[type="range"] {
     -webkit-appearance: none;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, var(--accent), var(--accent)) 0/var(--pct, 50%) 100% no-repeat, var(--border);
+    border-radius: 3px;
     outline: none;
+    transition: background 0.1s ease;
   }
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px; height: 18px;
-    background: var(--text-primary);
+    width: 20px; height: 20px;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent);
     border-radius: 50%;
     cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-lg);
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.05);
   }
   input[type="range"]::-moz-range-thumb {
-    width: 18px; height: 18px;
-    background: var(--text-primary);
+    width: 20px; height: 20px;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent);
     border-radius: 50%;
     cursor: pointer;
-    border: none;
+    border: 2px solid var(--accent);
   }
-  .panel { background: var(--bg-secondary); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
-  .panel-title { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; font-weight: 500; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .field-label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px; }
-  .pkg-card { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-  .pkg-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 0.5px solid var(--border); }
-  .pkg-name { font-size: 15px; font-weight: 500; }
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-  .stat { background: var(--bg-secondary); border-radius: 8px; padding: 8px 10px; }
-  .stat-label { font-size: 11px; color: var(--text-secondary); }
-  .stat-value { font-size: 16px; font-weight: 500; margin-top: 2px; }
-  .stat-good { background: #EAF3DE; }
-  .stat-good .stat-value { color: #27500A; }
-  .stat-warn { background: #FCEBEB; }
-  .stat-warn .stat-value { color: #791F1F; }
-  .slider-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-  .slider-row label { font-size: 12px; color: var(--text-secondary); min-width: 60px; }
+  .panel {
+    background: var(--bg-secondary);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.2s ease;
+  }
+  .panel:hover { box-shadow: var(--shadow-md); }
+  .panel-title {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .field-label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px; font-weight: 500; }
+  .pkg-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .pkg-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+  }
+  .pkg-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pkg-name { font-size: 16px; font-weight: 600; letter-spacing: -0.2px; }
+  .profit-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .stat {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    padding: 10px 12px;
+    transition: transform 0.15s ease;
+  }
+  .stat:hover { transform: scale(1.02); }
+  .stat-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
+  .stat-value { font-size: 17px; font-weight: 600; margin-top: 3px; letter-spacing: -0.3px; }
+  .stat-good { background: #ecfdf5; border: 1px solid #a7f3d0; }
+  .stat-good .stat-value { color: #065f46; }
+  .stat-warn { background: #fef2f2; border: 1px solid #fecaca; }
+  .stat-warn .stat-value { color: #991b1b; }
+  @media (prefers-color-scheme: dark) {
+    .stat-good { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.2); }
+    .stat-good .stat-value { color: #6ee7b7; }
+    .stat-warn { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
+    .stat-warn .stat-value { color: #fca5a5; }
+  }
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+  }
+  .slider-row label { font-size: 12px; color: var(--text-secondary); min-width: 60px; font-weight: 500; }
   .slider-row input[type=range] { flex: 1; }
-  .slider-row .val { font-size: 13px; font-weight: 500; min-width: 36px; text-align: right; }
-  .derived { font-size: 12px; color: var(--text-secondary); padding-top: 8px; border-top: 0.5px solid var(--border); }
-  .help { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+  .slider-row .val {
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 42px;
+    text-align: center;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .derived {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding-top: 10px;
+    margin-top: 4px;
+    border-top: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .help-panel {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-size: 12px;
+  }
   @media (max-width: 520px) {
     .grid-3 { grid-template-columns: 1fr; }
     .grid-2 { grid-template-columns: 1fr; }
+    body { padding: 20px 12px; }
+    .pkg-card { padding: 16px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
   <h1>Claude 套餐利润计算器</h1>
+  <div class="subtitle">快速计算套餐定价、成本与利润，找到最优价格策略</div>
 
   <div class="panel">
     <div class="panel-title">进货成本设置</div>
@@ -139,12 +262,13 @@
 
   <div class="panel">
     <div class="panel-title">计算逻辑</div>
-    <div class="help">
+    <div class="help-panel">
       单位真实成本 = 进货价 × 基准倍率 ÷ (每日额度 × 30)<br>
       客户实际可烧 = 月额度 ÷ 客户倍率<br>
       套餐成本 = 客户实际可烧 × 单位真实成本<br>
       套餐利润 = 套餐价 − 套餐成本
     </div>
+    <div style="text-align:center; padding-top:24px; font-size:12px; color:var(--text-secondary); opacity:0.6;">Made with Claude</div>
   </div>
 </div>
 
@@ -216,7 +340,7 @@
             '<div class="pkg-name">' + p.name + '</div>' +
             '<div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">每日 $' + dailyQuota.toFixed(1) + ' · 共 $' + p.quota + '/月</div>' +
           '</div>' +
-          '<div style="font-size: 13px; color: var(--text-secondary);">利润率 <span style="font-weight: 500; color: var(--text-primary);">' + profitRate.toFixed(1) + '%</span></div>' +
+          '<div class="profit-badge">' + profitRate.toFixed(1) + '%</div>' +
         '</div>' +
         '<div class="grid-3" style="margin-bottom: 12px;">' +
           '<div><label class="field-label">套餐价 (元)</label><input type="number" data-i="' + i + '" data-k="price" value="' + p.price + '" step="10"></div>' +
@@ -225,7 +349,7 @@
         '</div>' +
         '<div class="slider-row">' +
           '<label>客户倍率</label>' +
-          '<input type="range" data-i="' + i + '" data-k="customerRateSlider" min="0.4" max="1.5" step="0.05" value="' + p.customerRate + '">' +
+          '<input type="range" data-i="' + i + '" data-k="customerRateSlider" min="0.4" max="2" step="0.05" value="' + p.customerRate + '" style="--pct:' + ((p.customerRate - 0.4) / 1.6 * 100) + '%">' +
           '<span class="val">' + p.customerRate.toFixed(2) + '</span>' +
         '</div>' +
         '<div class="stat-grid">' +
