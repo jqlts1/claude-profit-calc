@@ -345,11 +345,11 @@
         '<div class="grid-3" style="margin-bottom: 12px;">' +
           '<div><label class="field-label">套餐价 (元)</label><input type="number" data-i="' + i + '" data-k="price" value="' + p.price + '" step="10"></div>' +
           '<div><label class="field-label">月额度 ($)</label><input type="number" data-i="' + i + '" data-k="quota" value="' + p.quota + '" step="100"></div>' +
-          '<div><label class="field-label">客户倍率</label><input type="number" data-i="' + i + '" data-k="customerRate" value="' + p.customerRate + '" step="0.05"></div>' +
+          '<div><label class="field-label">客户倍率</label><input type="number" data-i="' + i + '" data-k="customerRate" value="' + p.customerRate + '" step="0.05" min="' + globals.baseRate + '"></div>' +
         '</div>' +
         '<div class="slider-row">' +
           '<label>客户倍率</label>' +
-          '<input type="range" data-i="' + i + '" data-k="customerRateSlider" min="0.4" max="2" step="0.05" value="' + p.customerRate + '" style="--pct:' + ((p.customerRate - 0.4) / 1.6 * 100) + '%">' +
+          '<input type="range" data-i="' + i + '" data-k="customerRateSlider" min="' + globals.baseRate + '" max="2" step="0.05" value="' + p.customerRate + '" style="--pct:' + ((p.customerRate - globals.baseRate) / (2 - globals.baseRate) * 100) + '%">' +
           '<span class="val">' + p.customerRate.toFixed(2) + '</span>' +
         '</div>' +
         '<div class="stat-grid">' +
@@ -368,6 +368,7 @@
         let v = parseFloat(e.target.value);
         if (isNaN(v)) return;
         if (k === 'customerRateSlider') k = 'customerRate';
+        if (k === 'customerRate' && v < globals.baseRate) v = globals.baseRate;
         packages[i][k] = v;
         save();
         render();
@@ -380,6 +381,11 @@
       const v = parseFloat(e.target.value);
       if (!isNaN(v)) {
         globals[id] = v;
+        if (id === 'baseRate') {
+          packages.forEach(p => {
+            if (p.customerRate < v) p.customerRate = v;
+          });
+        }
         save();
         render();
       }
