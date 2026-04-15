@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 套餐利润计算器</title>
+<style>
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f4ef;
+    --bg-tertiary: #faf9f5;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --border: rgba(0,0,0,0.12);
+    --border-strong: rgba(0,0,0,0.2);
+    --accent: #2563eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1f1f1f;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #181818;
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --border: rgba(255,255,255,0.12);
+      --border-strong: rgba(255,255,255,0.2);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 24px 16px;
+    line-height: 1.6;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 500; margin: 0 0 24px; }
+  input[type="number"] {
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+  }
+  input[type="number"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
+  input[type="range"] {
+    -webkit-appearance: none;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    background: var(--text-primary);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px;
+    background: var(--text-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+  .panel { background: var(--bg-secondary); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+  .panel-title { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; font-weight: 500; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field-label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+  .pkg-card { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .pkg-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 0.5px solid var(--border); }
+  .pkg-name { font-size: 15px; font-weight: 500; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .stat { background: var(--bg-secondary); border-radius: 8px; padding: 8px 10px; }
+  .stat-label { font-size: 11px; color: var(--text-secondary); }
+  .stat-value { font-size: 16px; font-weight: 500; margin-top: 2px; }
+  .stat-good { background: #EAF3DE; }
+  .stat-good .stat-value { color: #27500A; }
+  .stat-warn { background: #FCEBEB; }
+  .stat-warn .stat-value { color: #791F1F; }
+  .slider-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+  .slider-row label { font-size: 12px; color: var(--text-secondary); min-width: 60px; }
+  .slider-row input[type=range] { flex: 1; }
+  .slider-row .val { font-size: 13px; font-weight: 500; min-width: 36px; text-align: right; }
+  .derived { font-size: 12px; color: var(--text-secondary); padding-top: 8px; border-top: 0.5px solid var(--border); }
+  .help { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+  @media (max-width: 520px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Claude 套餐利润计算器</h1>
+
+  <div class="panel">
+    <div class="panel-title">进货成本设置</div>
+    <div class="grid-3" style="margin-bottom: 10px;">
+      <div>
+        <label class="field-label">进货价 (元)</label>
+        <input type="number" id="costPrice" value="400" step="10">
+      </div>
+      <div>
+        <label class="field-label">对应每日额度 ($)</label>
+        <input type="number" id="costQuota" value="60" step="5">
+      </div>
+      <div>
+        <label class="field-label">基准倍率</label>
+        <input type="number" id="baseRate" value="0.6" step="0.05">
+      </div>
+    </div>
+    <div id="derivedCost" class="derived"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">对比参数</div>
+    <div class="grid-2">
+      <div>
+        <label class="field-label">汇率 (元/美元)</label>
+        <input type="number" id="exchangeRate" value="6.9" step="0.1">
+      </div>
+      <div>
+        <label class="field-label">官方价 ($/刀)</label>
+        <input type="number" id="officialPrice" value="1" step="0.01">
+      </div>
+    </div>
+  </div>
+
+  <div id="packages"></div>
+
+  <div class="panel">
+    <div class="panel-title">计算逻辑</div>
+    <div class="help">
+      单位真实成本 = 进货价 × 基准倍率 ÷ (每日额度 × 30)<br>
+      客户实际可烧 = 月额度 ÷ 客户倍率<br>
+      套餐成本 = 客户实际可烧 × 单位真实成本<br>
+      套餐利润 = 套餐价 − 套餐成本
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'claude_calc_state_v1';
+
+  let packages = [
+    { name: '基础版', price: 399, quota: 900, customerRate: 0.6 },
+    { name: '标准版', price: 699, quota: 1800, customerRate: 0.6 },
+    { name: '高级版', price: 999, quota: 3000, customerRate: 0.6 }
+  ];
+
+  let globals = {
+    costPrice: 400, costQuota: 60, baseRate: 0.6,
+    exchangeRate: 6.9, officialPrice: 1
+  };
+
+  // 从 localStorage 恢复
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved) {
+      if (saved.packages) packages = saved.packages;
+      if (saved.globals) globals = saved.globals;
+    }
+  } catch(e) {}
+
+  // 应用到输入框
+  Object.keys(globals).forEach(k => {
+    const el = document.getElementById(k);
+    if (el) el.value = globals[k];
+  });
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ packages, globals }));
+    } catch(e) {}
+  }
+
+  const container = document.getElementById('packages');
+
+  function getUnitCost() {
+    return globals.costPrice * globals.baseRate / (globals.costQuota * 30);
+  }
+
+  function render() {
+    const unitCost = getUnitCost();
+
+    document.getElementById('derivedCost').textContent =
+      '单位真实成本 = ' + unitCost.toFixed(4) + ' 元/真实烧$1';
+
+    container.innerHTML = packages.map((p, i) => {
+      const realApiUsable = p.quota / p.customerRate;
+      const cost = realApiUsable * unitCost;
+      const profit = p.price - cost;
+      const profitRate = p.price > 0 ? (profit / p.price * 100) : 0;
+      const pricePerDollar = p.price / p.quota;
+      const officialRmb = globals.officialPrice * globals.exchangeRate;
+      const discount = (pricePerDollar / officialRmb * 100);
+      const saved = 100 - discount;
+
+      const profitClass = profit < 50 ? 'stat-warn' : 'stat-good';
+
+      const dailyQuota = p.quota / 30;
+
+      return '<div class="pkg-card">' +
+        '<div class="pkg-header">' +
+          '<div>' +
+            '<div class="pkg-name">' + p.name + '</div>' +
+            '<div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">每日 $' + dailyQuota.toFixed(1) + ' · 共 $' + p.quota + '/月</div>' +
+          '</div>' +
+          '<div style="font-size: 13px; color: var(--text-secondary);">利润率 <span style="font-weight: 500; color: var(--text-primary);">' + profitRate.toFixed(1) + '%</span></div>' +
+        '</div>' +
+        '<div class="grid-3" style="margin-bottom: 12px;">' +
+          '<div><label class="field-label">套餐价 (元)</label><input type="number" data-i="' + i + '" data-k="price" value="' + p.price + '" step="10"></div>' +
+          '<div><label class="field-label">月额度 ($)</label><input type="number" data-i="' + i + '" data-k="quota" value="' + p.quota + '" step="100"></div>' +
+          '<div><label class="field-label">客户倍率</label><input type="number" data-i="' + i + '" data-k="customerRate" value="' + p.customerRate + '" step="0.05"></div>' +
+        '</div>' +
+        '<div class="slider-row">' +
+          '<label>客户倍率</label>' +
+          '<input type="range" data-i="' + i + '" data-k="customerRateSlider" min="0.4" max="1.5" step="0.05" value="' + p.customerRate + '">' +
+          '<span class="val">' + p.customerRate.toFixed(2) + '</span>' +
+        '</div>' +
+        '<div class="stat-grid">' +
+          '<div class="stat"><div class="stat-label">客户实际可烧API</div><div class="stat-value">$' + realApiUsable.toFixed(0) + '</div></div>' +
+          '<div class="stat"><div class="stat-label">套餐成本 (元)</div><div class="stat-value">' + cost.toFixed(1) + '</div></div>' +
+          '<div class="stat ' + profitClass + '"><div class="stat-label">套餐利润 (元)</div><div class="stat-value">' + profit.toFixed(1) + '</div></div>' +
+          '<div class="stat"><div class="stat-label">一刀价 / 对比官方</div><div class="stat-value">' + pricePerDollar.toFixed(3) + ' <span style="font-size: 12px; color: var(--text-secondary); font-weight: 400;">省' + saved.toFixed(1) + '%</span></div></div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    container.querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('input', e => {
+        const i = parseInt(e.target.dataset.i);
+        let k = e.target.dataset.k;
+        let v = parseFloat(e.target.value);
+        if (isNaN(v)) return;
+        if (k === 'customerRateSlider') k = 'customerRate';
+        packages[i][k] = v;
+        save();
+        render();
+      });
+    });
+  }
+
+  ['costPrice', 'costQuota', 'baseRate', 'exchangeRate', 'officialPrice'].forEach(id => {
+    document.getElementById(id).addEventListener('input', e => {
+      const v = parseFloat(e.target.value);
+      if (!isNaN(v)) {
+        globals[id] = v;
+        save();
+        render();
+      }
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
