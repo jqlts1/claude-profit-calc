@@ -15,6 +15,12 @@
     --border-strong: rgba(0,0,0,0.15);
     --accent: #6366f1;
     --accent-light: rgba(99,102,241,0.1);
+    --green: #059669;
+    --green-light: #ecfdf5;
+    --green-border: #a7f3d0;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --red-border: #fecaca;
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
@@ -30,6 +36,12 @@
       --border-strong: rgba(255,255,255,0.15);
       --accent: #818cf8;
       --accent-light: rgba(129,140,248,0.12);
+      --green: #34d399;
+      --green-light: rgba(16,185,129,0.1);
+      --green-border: rgba(16,185,129,0.2);
+      --red: #f87171;
+      --red-light: rgba(239,68,68,0.1);
+      --red-border: rgba(239,68,68,0.2);
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
       --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
@@ -45,18 +57,10 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
-  .container { max-width: 720px; margin: 0 auto; }
-  h1 {
-    font-size: 26px;
-    font-weight: 600;
-    margin: 0 0 8px;
-    letter-spacing: -0.3px;
-  }
-  .subtitle {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 28px;
-  }
+  .container { max-width: 780px; margin: 0 auto; }
+  h1 { font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.3px; }
+  .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 28px; }
+
   input[type="number"] {
     width: 100%;
     height: 38px;
@@ -72,40 +76,7 @@
   }
   input[type="number"]:hover { border-color: var(--border-strong); }
   input[type="number"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
-  input[type="range"] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(to right, var(--accent), var(--accent)) 0/var(--pct, 50%) 100% no-repeat, var(--border);
-    border-radius: 3px;
-    outline: none;
-    transition: background 0.1s ease;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px; height: 20px;
-    background: var(--bg-primary);
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-    box-shadow: var(--shadow-lg);
-  }
-  input[type="range"]::-webkit-slider-thumb:active {
-    transform: scale(1.05);
-  }
-  input[type="range"]::-moz-range-thumb {
-    width: 20px; height: 20px;
-    background: var(--bg-primary);
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid var(--accent);
-  }
+
   .panel {
     background: var(--bg-secondary);
     border-radius: 14px;
@@ -126,95 +97,228 @@
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .field-label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px; font-weight: 500; }
+  .derived { font-size: 12px; color: var(--text-secondary); padding-top: 10px; margin-top: 4px; border-top: 1px solid var(--border); font-weight: 500; }
+
+  /* 套餐编辑卡片 */
   .pkg-card {
     background: var(--bg-primary);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 20px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     box-shadow: var(--shadow-sm);
     transition: box-shadow 0.25s ease, transform 0.25s ease;
   }
-  .pkg-card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-1px);
-  }
+  .pkg-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
   .pkg-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
   }
   .pkg-name { font-size: 16px; font-weight: 600; letter-spacing: -0.2px; }
+  .pkg-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
   .profit-badge {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: var(--accent-light);
-    color: var(--accent);
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
   }
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-  .stat {
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    padding: 10px 12px;
-    transition: transform 0.15s ease;
-  }
-  .stat:hover { transform: scale(1.02); }
-  .stat-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
-  .stat-value { font-size: 17px; font-weight: 600; margin-top: 3px; letter-spacing: -0.3px; }
-  .stat-good { background: #ecfdf5; border: 1px solid #a7f3d0; }
-  .stat-good .stat-value { color: #065f46; }
-  .stat-warn { background: #fef2f2; border: 1px solid #fecaca; }
-  .stat-warn .stat-value { color: #991b1b; }
-  @media (prefers-color-scheme: dark) {
-    .stat-good { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.2); }
-    .stat-good .stat-value { color: #6ee7b7; }
-    .stat-warn { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
-    .stat-warn .stat-value { color: #fca5a5; }
-  }
-  .slider-row {
+  .profit-badge.good { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
+  .profit-badge.warn { background: var(--red-light); color: var(--red); border: 1px solid var(--red-border); }
+
+  .stats-row {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 10px;
-    padding: 10px 14px;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px 6px;
     background: var(--bg-secondary);
     border-radius: 10px;
   }
-  .slider-row label { font-size: 12px; color: var(--text-secondary); min-width: 60px; font-weight: 500; }
-  .slider-row input[type=range] { flex: 1; }
-  .slider-row .val {
+  .stat-item .label { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
+  .stat-item .value { font-size: 16px; font-weight: 600; margin-top: 3px; letter-spacing: -0.3px; }
+  .stat-item.profit-good { background: var(--green-light); border: 1px solid var(--green-border); }
+  .stat-item.profit-good .value { color: var(--green); }
+  .stat-item.profit-warn { background: var(--red-light); border: 1px solid var(--red-border); }
+  .stat-item.profit-warn .value { color: var(--red); }
+  .stat-item .discount {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+    background: var(--green-light);
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 2px;
+  }
+
+  /* 客户视角预览 */
+  .preview-section { margin: 28px 0 20px; }
+  .preview-title {
+    font-size: 12px; color: var(--text-secondary); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .preview-title::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .preview-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .preview-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .preview-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .preview-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), var(--shadow-md);
+  }
+  .preview-card.featured:hover {
+    box-shadow: 0 0 0 1px var(--accent), var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+  .recommend-tag {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 12px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .preview-card .p-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  .preview-card.featured .p-name { color: var(--accent); }
+  .preview-card .p-price {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .preview-card .p-price .currency { font-size: 18px; font-weight: 600; vertical-align: top; margin-right: 2px; }
+  .preview-card .p-price .period { font-size: 14px; font-weight: 400; color: var(--text-secondary); }
+  .preview-card .p-features {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 2;
+  }
+  .preview-card .p-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .preview-card .p-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
-    min-width: 42px;
-    text-align: center;
-    color: var(--accent);
-    background: var(--accent-light);
-    padding: 2px 8px;
-    border-radius: 6px;
+    cursor: default;
+    transition: all 0.2s ease;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
   }
-  .derived {
+  .preview-card.featured .p-btn {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* 可折叠设置区 */
+  .settings-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+  }
+  .settings-toggle:hover { background: var(--bg-primary); box-shadow: var(--shadow-md); }
+  .settings-toggle .toggle-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .settings-toggle .toggle-icon {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+  .settings-toggle.open .toggle-icon { transform: rotate(180deg); }
+  .settings-toggle .toggle-summary {
     font-size: 12px;
     color: var(--text-secondary);
-    padding-top: 10px;
-    margin-top: 4px;
-    border-top: 1px solid var(--border);
-    font-weight: 500;
+    opacity: 0.7;
+    font-weight: 400;
   }
+  .settings-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+    opacity: 0;
+  }
+  .settings-body.open {
+    max-height: 400px;
+    opacity: 1;
+  }
+
   .help-panel {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-secondary);
     line-height: 1.8;
     font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
-    font-size: 12px;
   }
-  @media (max-width: 520px) {
+
+  @media (max-width: 640px) {
     .grid-3 { grid-template-columns: 1fr; }
     .grid-2 { grid-template-columns: 1fr; }
+    .preview-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
+    .stats-row { flex-wrap: wrap; }
+    .stat-item { min-width: calc(50% - 6px); }
     body { padding: 20px 12px; }
     .pkg-card { padding: 16px; }
   }
@@ -225,51 +329,86 @@
   <h1>Claude 套餐利润计算器</h1>
   <div class="subtitle">快速计算套餐定价、成本与利润，找到最优价格策略</div>
 
-  <div class="panel">
-    <div class="panel-title">进货成本设置</div>
-    <div class="grid-3" style="margin-bottom: 10px;">
-      <div>
-        <label class="field-label">进货价 (元)</label>
-        <input type="number" id="costPrice" value="400" step="10">
+  <div class="settings-toggle" id="settingsToggle" onclick="document.getElementById('settingsToggle').classList.toggle('open');document.getElementById('settingsBody').classList.toggle('open');">
+    <div class="toggle-left">
+      <span class="toggle-icon">&#9662;</span>
+      <span>基础设置</span>
+    </div>
+    <span class="toggle-summary" id="settingsSummary"></span>
+  </div>
+  <div class="settings-body" id="settingsBody">
+    <div class="panel">
+      <div class="panel-title">进货成本</div>
+      <div class="grid-3" style="margin-bottom: 10px;">
+        <div>
+          <label class="field-label">进货价 (元)</label>
+          <input type="number" id="costPrice" value="400" step="10">
+        </div>
+        <div>
+          <label class="field-label">对应每日额度 ($)</label>
+          <input type="number" id="costQuota" value="60" step="5">
+        </div>
+        <div>
+          <label class="field-label">基准倍率</label>
+          <input type="number" id="baseRate" value="0.6" step="0.05">
+        </div>
       </div>
-      <div>
-        <label class="field-label">对应每日额度 ($)</label>
-        <input type="number" id="costQuota" value="60" step="5">
-      </div>
-      <div>
-        <label class="field-label">基准倍率</label>
-        <input type="number" id="baseRate" value="0.6" step="0.05">
+      <div id="derivedCost" class="derived"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">对比参数</div>
+      <div class="grid-2">
+        <div>
+          <label class="field-label">汇率 (元/美元)</label>
+          <input type="number" id="exchangeRate" value="6.9" step="0.1">
+        </div>
+        <div>
+          <label class="field-label">官方价 ($/刀)</label>
+          <input type="number" id="officialPrice" value="1" step="0.01">
+        </div>
       </div>
     </div>
-    <div id="derivedCost" class="derived"></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-title">对比参数</div>
-    <div class="grid-2">
-      <div>
-        <label class="field-label">汇率 (元/美元)</label>
-        <input type="number" id="exchangeRate" value="6.9" step="0.1">
-      </div>
-      <div>
-        <label class="field-label">官方价 ($/刀)</label>
-        <input type="number" id="officialPrice" value="1" step="0.01">
+    <div class="panel" style="margin-top:12px;">
+      <div class="panel-title">计算逻辑</div>
+      <div class="help-panel">
+        单位真实成本 = 进货价 × 基准倍率 ÷ (每日额度 × 30)<br>
+        客户实际可烧 = 每日额度 × 30 ÷ 客户倍率<br>
+        套餐成本 = 客户实际可烧 × 单位真实成本<br>
+        套餐利润 = 套餐价 − 套餐成本
       </div>
     </div>
   </div>
 
   <div id="packages"></div>
 
-  <div class="panel">
-    <div class="panel-title">计算逻辑</div>
-    <div class="help-panel">
-      单位真实成本 = 进货价 × 基准倍率 ÷ (每日额度 × 30)<br>
-      客户实际可烧 = 月额度 ÷ 客户倍率<br>
-      套餐成本 = 客户实际可烧 × 单位真实成本<br>
-      套餐利润 = 套餐价 − 套餐成本
-    </div>
-    <div style="text-align:center; padding-top:24px; font-size:12px; color:var(--text-secondary); opacity:0.6;">Made with Claude</div>
+  <div class="preview-section">
+    <div class="preview-title">客户视角预览</div>
+    <div id="preview" class="preview-grid"></div>
   </div>
+
+  <template id="pkg-tpl">
+    <div class="pkg-card">
+      <div class="pkg-header">
+        <div>
+          <div class="pkg-name" data-bind="name"></div>
+          <div class="pkg-sub" data-bind="sub"></div>
+        </div>
+        <div class="profit-badge" data-bind="badge"></div>
+      </div>
+      <div class="grid-3">
+        <div><label class="field-label">套餐价 (元)</label><input type="number" data-k="price" step="10"></div>
+        <div><label class="field-label">每日额度 ($)</label><input type="number" data-k="dailyQuota" step="1"></div>
+        <div><label class="field-label">客户倍率</label><input type="number" data-k="customerRate" step="0.05"></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item"><div class="label">成本</div><div class="value" data-bind="cost"></div></div>
+        <div class="stat-item" data-bind="profitStat"><div class="label">利润</div><div class="value" data-bind="profit"></div></div>
+        <div class="stat-item"><div class="label">一刀价</div><div class="value" data-bind="ppd"></div><div class="discount" data-bind="discount"></div></div>
+      </div>
+    </div>
+  </template>
+
+  <div style="text-align:center; padding:20px 0 8px; font-size:12px; color:var(--text-secondary); opacity:0.5;">Made with Claude</div>
 </div>
 
 <script>
@@ -277,9 +416,9 @@
   const STORAGE_KEY = 'claude_calc_state_v1';
 
   let packages = [
-    { name: '基础版', price: 399, quota: 900, customerRate: 0.6 },
-    { name: '标准版', price: 699, quota: 1800, customerRate: 0.6 },
-    { name: '高级版', price: 999, quota: 3000, customerRate: 0.6 }
+    { name: '基础版', price: 399, dailyQuota: 30, customerRate: 0.6 },
+    { name: '标准版', price: 699, dailyQuota: 60, customerRate: 0.6 },
+    { name: '高级版', price: 999, dailyQuota: 100, customerRate: 0.6 }
   ];
 
   let globals = {
@@ -287,7 +426,6 @@
     exchangeRate: 6.9, officialPrice: 1
   };
 
-  // 从 localStorage 恢复
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (saved) {
@@ -296,103 +434,160 @@
     }
   } catch(e) {}
 
-  // 应用到输入框
   Object.keys(globals).forEach(k => {
     const el = document.getElementById(k);
     if (el) el.value = globals[k];
   });
 
   function save() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ packages, globals }));
-    } catch(e) {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ packages, globals })); } catch(e) {}
   }
 
   const container = document.getElementById('packages');
+  const preview = document.getElementById('preview');
+  const tpl = document.getElementById('pkg-tpl');
 
   function getUnitCost() {
     return globals.costPrice * globals.baseRate / (globals.costQuota * 30);
   }
 
-  function render() {
+  // 每个套餐卡片的 DOM 引用，只创建一次
+  let cardRefs = [];
+
+  function buildCards() {
+    container.innerHTML = '';
+    cardRefs = [];
+
+    packages.forEach((p, i) => {
+      const clone = tpl.content.cloneNode(true);
+      const card = clone.querySelector('.pkg-card');
+
+      // 设置输入框初始值
+      const priceInput = card.querySelector('[data-k="price"]');
+      const dailyQuotaInput = card.querySelector('[data-k="dailyQuota"]');
+      const rateInput = card.querySelector('[data-k="customerRate"]');
+
+      priceInput.value = p.price;
+      dailyQuotaInput.value = p.dailyQuota;
+      rateInput.value = p.customerRate;
+      rateInput.min = globals.baseRate;
+
+      // 绑定事件 — 只更新数据，不重建 DOM
+      [priceInput, dailyQuotaInput, rateInput].forEach(inp => {
+        inp.addEventListener('input', function() {
+          const k = this.dataset.k;
+          let v = parseFloat(this.value);
+          if (isNaN(v)) { updateDisplay(); return; }
+          if (k === 'customerRate' && v < globals.baseRate) {
+            v = globals.baseRate;
+            this.value = v;
+          }
+          packages[i][k] = v;
+          save();
+          updateDisplay();
+        });
+      });
+
+      container.appendChild(clone);
+      const realCard = container.lastElementChild;
+      cardRefs.push({
+        name: realCard.querySelector('[data-bind="name"]'),
+        sub: realCard.querySelector('[data-bind="sub"]'),
+        badge: realCard.querySelector('[data-bind="badge"]'),
+        cost: realCard.querySelector('[data-bind="cost"]'),
+        profit: realCard.querySelector('[data-bind="profit"]'),
+        profitStat: realCard.querySelector('[data-bind="profitStat"]'),
+        ppd: realCard.querySelector('[data-bind="ppd"]'),
+        discount: realCard.querySelector('[data-bind="discount"]'),
+        rateInput: realCard.querySelector('[data-k="customerRate"]'),
+      });
+    });
+  }
+
+  function updateDisplay() {
     const unitCost = getUnitCost();
 
     document.getElementById('derivedCost').textContent =
       '单位真实成本 = ' + unitCost.toFixed(4) + ' 元/真实烧$1';
 
-    container.innerHTML = packages.map((p, i) => {
-      const realApiUsable = p.quota / p.customerRate;
+    document.getElementById('settingsSummary').textContent =
+      '¥' + globals.costPrice + ' · $' + globals.costQuota + '/日 · 倍率' + globals.baseRate + ' · 汇率' + globals.exchangeRate;
+
+    // 更新每张卡片的展示（不碰 input）
+    packages.forEach((p, i) => {
+      const r = cardRefs[i];
+      if (!r) return;
+
+      const monthQuota = p.dailyQuota * 30;
+      const realApiUsable = monthQuota / p.customerRate;
       const cost = realApiUsable * unitCost;
       const profit = p.price - cost;
       const profitRate = p.price > 0 ? (profit / p.price * 100) : 0;
-      const pricePerDollar = p.price / p.quota;
+      const pricePerDollar = p.price / monthQuota;
       const officialRmb = globals.officialPrice * globals.exchangeRate;
-      const discount = (pricePerDollar / officialRmb * 100);
-      const saved = 100 - discount;
+      const saved = 100 - (pricePerDollar / officialRmb * 100);
+      const isGood = profit >= 50;
 
-      const profitClass = profit < 50 ? 'stat-warn' : 'stat-good';
+      r.name.textContent = p.name;
+      r.sub.textContent = '月额度 $' + monthQuota + ' · 实际可烧 $' + realApiUsable.toFixed(0) + '/月';
+      r.badge.textContent = '利润 ' + profitRate.toFixed(1) + '%';
+      r.badge.className = 'profit-badge ' + (isGood ? 'good' : 'warn');
+      r.cost.textContent = '¥' + cost.toFixed(0);
+      r.profit.textContent = '¥' + profit.toFixed(0);
+      r.profitStat.className = 'stat-item ' + (isGood ? 'profit-good' : 'profit-warn');
+      r.ppd.textContent = '¥' + pricePerDollar.toFixed(2);
+      r.discount.textContent = '省' + saved.toFixed(0) + '%';
 
-      const dailyQuota = p.quota / 30;
+      r.rateInput.min = globals.baseRate;
+    });
 
-      return '<div class="pkg-card">' +
-        '<div class="pkg-header">' +
-          '<div>' +
-            '<div class="pkg-name">' + p.name + '</div>' +
-            '<div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">每日 $' + dailyQuota.toFixed(1) + ' · 共 $' + p.quota + '/月</div>' +
-          '</div>' +
-          '<div class="profit-badge">' + profitRate.toFixed(1) + '%</div>' +
+    // 客户视角预览
+    preview.innerHTML = packages.map((p, i) => {
+      const monthQuota = p.dailyQuota * 30;
+      const pricePerDollar = p.price / monthQuota;
+      const officialRmb = globals.officialPrice * globals.exchangeRate;
+      const saved = (100 - (pricePerDollar / officialRmb * 100)).toFixed(0);
+      const isFeatured = i === 1;
+
+      return '<div class="preview-card' + (isFeatured ? ' featured' : '') + '">' +
+        (isFeatured ? '<div class="recommend-tag">最受欢迎</div>' : '') +
+        '<div class="p-name">' + p.name + '</div>' +
+        '<div class="p-price">' +
+          '<span class="currency">¥</span>' + p.price +
+          '<span class="period">/月</span>' +
         '</div>' +
-        '<div class="grid-3" style="margin-bottom: 12px;">' +
-          '<div><label class="field-label">套餐价 (元)</label><input type="number" data-i="' + i + '" data-k="price" value="' + p.price + '" step="10"></div>' +
-          '<div><label class="field-label">月额度 ($)</label><input type="number" data-i="' + i + '" data-k="quota" value="' + p.quota + '" step="100"></div>' +
-          '<div><label class="field-label">客户倍率</label><input type="number" data-i="' + i + '" data-k="customerRate" value="' + p.customerRate + '" step="0.05" min="' + globals.baseRate + '"></div>' +
-        '</div>' +
-        '<div class="slider-row">' +
-          '<label>客户倍率</label>' +
-          '<input type="range" data-i="' + i + '" data-k="customerRateSlider" min="' + globals.baseRate + '" max="2" step="0.05" value="' + p.customerRate + '" style="--pct:' + ((p.customerRate - globals.baseRate) / (2 - globals.baseRate) * 100) + '%">' +
-          '<span class="val">' + p.customerRate.toFixed(2) + '</span>' +
-        '</div>' +
-        '<div class="stat-grid">' +
-          '<div class="stat"><div class="stat-label">客户实际可烧API</div><div class="stat-value">$' + realApiUsable.toFixed(0) + '</div></div>' +
-          '<div class="stat"><div class="stat-label">套餐成本 (元)</div><div class="stat-value">' + cost.toFixed(1) + '</div></div>' +
-          '<div class="stat ' + profitClass + '"><div class="stat-label">套餐利润 (元)</div><div class="stat-value">' + profit.toFixed(1) + '</div></div>' +
-          '<div class="stat"><div class="stat-label">一刀价 / 对比官方</div><div class="stat-value">' + pricePerDollar.toFixed(3) + ' <span style="font-size: 12px; color: var(--text-secondary); font-weight: 400;">省' + saved.toFixed(1) + '%</span></div></div>' +
-        '</div>' +
+        '<ul class="p-features">' +
+          '<li>每日 $' + p.dailyQuota + ' API 额度</li>' +
+          '<li>月度共 $' + monthQuota + ' 额度</li>' +
+          '<li>比官方省 ' + saved + '%</li>' +
+        '</ul>' +
+        '<div class="p-btn">立即购买</div>' +
       '</div>';
     }).join('');
-
-    container.querySelectorAll('input').forEach(inp => {
-      inp.addEventListener('input', e => {
-        const i = parseInt(e.target.dataset.i);
-        let k = e.target.dataset.k;
-        let v = parseFloat(e.target.value);
-        if (isNaN(v)) return;
-        if (k === 'customerRateSlider') k = 'customerRate';
-        if (k === 'customerRate' && v < globals.baseRate) v = globals.baseRate;
-        packages[i][k] = v;
-        save();
-        render();
-      });
-    });
   }
 
+  // 全局设置输入框
   ['costPrice', 'costQuota', 'baseRate', 'exchangeRate', 'officialPrice'].forEach(id => {
     document.getElementById(id).addEventListener('input', e => {
       const v = parseFloat(e.target.value);
-      if (!isNaN(v)) {
-        globals[id] = v;
-        if (id === 'baseRate') {
-          packages.forEach(p => {
-            if (p.customerRate < v) p.customerRate = v;
-          });
-        }
-        save();
-        render();
+      if (isNaN(v)) { updateDisplay(); return; }
+      globals[id] = v;
+      if (id === 'baseRate') {
+        packages.forEach((p, i) => {
+          if (p.customerRate < v) {
+            p.customerRate = v;
+            if (cardRefs[i]) cardRefs[i].rateInput.value = v;
+          }
+        });
       }
+      save();
+      updateDisplay();
     });
   });
 
-  render();
+  // 初始化：创建卡片 + 首次渲染
+  buildCards();
+  updateDisplay();
 })();
 </script>
 </body>
